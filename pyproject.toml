@@ -1,0 +1,44 @@
+[project]
+name = "minimalistic-fastapi-template"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.14.0",
+    "asyncpg>=0.30.0",
+    "fastapi>=0.115.6",
+    "pydantic-settings>=2.6.1",
+    "python-dotenv>=1.0.1",
+    "sqlalchemy>=2.0.36",
+    "uvicorn>=0.32.1",
+    "python-jose[cryptography]>=3.3.0",
+    "bcrypt==4.0.1",
+    "passlib==1.7.4",
+    "pydantic[email]>=2.5.2",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.5",
+    "httpx>=0.27.0",
+    "pytest-cov>=4.1.0",
+    "black>=24.1.0",
+    "isort>=5.13.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=api --cov-report=term-missing"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88

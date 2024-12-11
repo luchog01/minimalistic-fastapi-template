@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "0.5.8"
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "pyproject.toml"
+        
+    - name: Install the project
+      run: uv sync --all-extras
+
+    - name: Check imports with isort
+      run: uv run isort --check-only --diff .
+
+    - name: Check code formatting with black
+      run: uv run black --check .
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: "0.5.8"
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: "pyproject.toml"
+        
+    - name: Install the project
+      run: uv sync --all-extras
+        
+    - name: Run tests
+      run: uv run pytest tests
+      env:
+        DATABASE_URL: "postgresql+asyncpg://postgres:postgres@localhost:5432/test_db"
+        SECRET_KEY: "test_secret_key"
+        ALGORITHM: "HS256"
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5

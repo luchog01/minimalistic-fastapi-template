@@ -23,6 +23,7 @@ dependencies = [
     "black>=24.1.0",
     "isort>=5.13.0",
     "pre-commit>=4.0.1",
+    "autoflake>=2.3.1",
 ]
 
 [tool.pytest.ini_options]

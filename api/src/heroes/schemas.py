@@ -20,8 +20,6 @@ class HeroBase(BaseModel):
 class HeroCreate(HeroBase):
     """Schema for creating a new hero."""
 
-    pass
-
 
 class HeroUpdate(BaseModel):
     """Schema for updating an existing hero.

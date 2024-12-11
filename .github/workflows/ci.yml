@@ -9,6 +9,10 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+
     steps:
     - uses: actions/checkout@v4
 
@@ -20,7 +24,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: "pyproject.toml"
+        python-version: "3.12"
         
     - name: Install the project
       run: uv sync --all-extras
@@ -49,7 +53,7 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
-        python-version: "pyproject.toml"
+        python-version: "3.12"
         
     - name: Install the project
       run: uv sync --all-extras

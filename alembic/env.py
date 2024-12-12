@@ -2,6 +2,8 @@ import asyncio
 import os
 import sys
 from logging.config import fileConfig
+import importlib
+from pathlib import Path
 
 # Add the project root directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -12,9 +14,17 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 from api.core.config import settings
-
-# Import your models here
 from api.core.database import Base
+
+# Automatically import all models
+src_path = Path(__file__).parent.parent / "api" / "src"
+for path in src_path.rglob("*.py"):
+    if path.name != "__init__.py":
+        module_path = str(path.relative_to(Path(__file__).parent.parent)).replace(os.sep, ".")[:-3]
+        try:
+            importlib.import_module(module_path)
+        except Exception as e:
+            print(f"Failed to import {module_path}: {e}")
 
 # this is the Alembic Config object
 config = context.config

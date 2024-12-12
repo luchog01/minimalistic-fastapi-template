@@ -1,8 +1,8 @@
 import asyncio
+import importlib
 import os
 import sys
 from logging.config import fileConfig
-import importlib
 from pathlib import Path
 
 # Add the project root directory to the Python path
@@ -20,7 +20,9 @@ from api.core.database import Base
 src_path = Path(__file__).parent.parent / "api" / "src"
 for path in src_path.rglob("*.py"):
     if path.name != "__init__.py":
-        module_path = str(path.relative_to(Path(__file__).parent.parent)).replace(os.sep, ".")[:-3]
+        module_path = str(path.relative_to(Path(__file__).parent.parent)).replace(
+            os.sep, "."
+        )[:-3]
         try:
             importlib.import_module(module_path)
         except Exception as e:

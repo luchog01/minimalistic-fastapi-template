@@ -62,10 +62,25 @@ cp .env.example .env
 # Edit .env with your database credentials
 ```
 
+> 💡 **Important**: 
+> - The DATABASE_URL must start with `postgresql+asyncpg://` (e.g., `postgresql+asyncpg://user:pass@localhost:5432/dbname`)
+> - After updating environment variables, close and reopen VS Code to reload the configuration properly. VS Code will automatically activate the virtual environment when you reopen.
+
 5. Start the application:
+
+Using terminal:
 ```bash
-uv run uvicorn app.main:app
+uv run uvicorn api.main:app
 ```
+
+Using VS Code:
+> 💡 If you're using VS Code, we've included run configurations in the `.vscode` folder. Just press `F5` or use the "Run and Debug" panel to start the application!
+
+6. (Optional) Enable pre-commit hooks for linting:
+```bash
+uv run pre-commit install
+```
+> 💡 This will enable automatic code formatting and linting checks before each commit
 
 ## Creating a Migration 🔄
 1. Make changes to your models

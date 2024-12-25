@@ -37,6 +37,46 @@ async def get_all_heroes(
         raise
 
 
+@router.get("/test-performance")
+async def test_performance(
+    service: HeroService = Depends(get_hero_service),
+    current_user: User = Depends(get_current_user),
+) -> None:
+    from time import perf_counter
+
+    start_time = perf_counter()
+    await service.get_all_heroes()
+    end_time = perf_counter()
+
+    logger.info(f"All heroes fetched in {end_time - start_time} seconds")
+
+    start_time = perf_counter()
+    new_hero = HeroCreate(alias="new_hero", name="New Hero")
+    await service.create_hero(new_hero)
+    end_time = perf_counter()
+
+    logger.info(f"Hero created in {end_time - start_time} seconds")
+
+    start_time = perf_counter()
+    await service.get_hero(1)
+    end_time = perf_counter()
+
+    logger.info(f"Hero fetched in {end_time - start_time} seconds")
+
+    start_time = perf_counter()
+    updated_hero = HeroUpdate(powers="Updated powers")
+    await service.update_hero(1, updated_hero)
+    end_time = perf_counter()
+
+    logger.info(f"Hero updated in {end_time - start_time} seconds")
+
+    start_time = perf_counter()
+    await service.delete_hero(1)
+    end_time = perf_counter()
+
+    logger.info(f"Hero deleted in {end_time - start_time} seconds")
+
+
 @router.get("/{hero_id}", response_model=HeroResponse)
 async def get_hero(
     hero_id: int,
@@ -103,43 +143,3 @@ async def delete_hero(
     except Exception as e:
         logger.error(f"Failed to delete hero {hero_id}: {str(e)}")
         raise
-
-
-@router.get("/test-performance")
-async def test_performance(
-    service: HeroService = Depends(get_hero_service),
-    current_user: User = Depends(get_current_user),
-) -> None:
-    from time import perf_counter
-
-    start_time = perf_counter()
-    await service.get_all_heroes()
-    end_time = perf_counter()
-
-    logger.info(f"All heroes fetched in {end_time - start_time} seconds")
-
-    start_time = perf_counter()
-    new_hero = HeroCreate(alias="new_hero", name="New Hero")
-    await service.create_hero(new_hero)
-    end_time = perf_counter()
-
-    logger.info(f"Hero created in {end_time - start_time} seconds")
-
-    start_time = perf_counter()
-    await service.get_hero(1)
-    end_time = perf_counter()
-
-    logger.info(f"Hero fetched in {end_time - start_time} seconds")
-
-    start_time = perf_counter()
-    updated_hero = HeroUpdate(powers="Updated powers")
-    await service.update_hero(1, updated_hero)
-    end_time = perf_counter()
-
-    logger.info(f"Hero updated in {end_time - start_time} seconds")
-
-    start_time = perf_counter()
-    await service.delete_hero(1)
-    end_time = perf_counter()
-
-    logger.info(f"Hero deleted in {end_time - start_time} seconds")

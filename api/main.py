@@ -1,10 +1,13 @@
 from fastapi import FastAPI
 
 from api.core.config import settings
-from api.core.logging import get_logger
+from api.core.logging import get_logger, setup_logging
 from api.src.heroes.routes import router as heroes_router
 from api.src.users.routes import router as auth_router
 from api.utils.migrations import run_migrations
+
+# Set up logging configuration
+setup_logging()
 
 # Optional: Run migrations on startup
 run_migrations()

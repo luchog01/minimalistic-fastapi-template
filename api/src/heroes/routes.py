@@ -52,26 +52,26 @@ async def test_performance(
 
     start_time = perf_counter()
     new_hero = HeroCreate(alias="new_hero", name="New Hero")
-    await service.create_hero(new_hero)
+    hero = await service.create_hero(new_hero)
     end_time = perf_counter()
 
     logger.info(f"Hero created in {end_time - start_time} seconds")
 
     start_time = perf_counter()
-    await service.get_hero(1)
+    hero = await service.get_hero(hero.id)
     end_time = perf_counter()
 
     logger.info(f"Hero fetched in {end_time - start_time} seconds")
 
     start_time = perf_counter()
     updated_hero = HeroUpdate(powers="Updated powers")
-    await service.update_hero(1, updated_hero)
+    hero = await service.update_hero(hero.id, updated_hero)
     end_time = perf_counter()
 
     logger.info(f"Hero updated in {end_time - start_time} seconds")
 
     start_time = perf_counter()
-    await service.delete_hero(1)
+    await service.delete_hero(hero.id)
     end_time = perf_counter()
 
     logger.info(f"Hero deleted in {end_time - start_time} seconds")

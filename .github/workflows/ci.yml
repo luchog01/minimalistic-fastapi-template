@@ -62,8 +62,8 @@ jobs:
       run: uv run pytest tests
       env:
         DATABASE_URL: "postgresql+asyncpg://postgres:postgres@localhost:5432/test_db"
-        SECRET_KEY: "test_secret_key"
-        ALGORITHM: "HS256"
+        JWT_SECRET: "test_secret_key"
+        JWT_ALGORITHM: "HS256"
 
     services:
       postgres:

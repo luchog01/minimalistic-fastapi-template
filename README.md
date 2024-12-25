@@ -1,83 +1,95 @@
-# Hero API
+# Hero API 🦸‍♂️
+A modern, production-ready FastAPI template for building scalable APIs.
 
-A FastAPI-based CRUD application for managing heroes, following best practices and modern Python async patterns.
+## Features ✨
+- 🔄 Complete CRUD operations for heroes
+- 📊 Async SQLAlchemy with PostgreSQL
+- 🔄 Automatic Alembic migrations
+- 🏗️ Clean architecture with repository pattern
+- ⚠️ Custom exception handling
+- 🔍 CI and testing pipeline
+- 🧹 Linter setup with pre-commit hooks
+- 🚂 One-click Railway deployment
 
-## Features
+## Deploy Now! 🚀
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/template/wbTudS?referralCode=beBXJA)
 
-- Full CRUD operations for heroes
-- Async SQLAlchemy with PostgreSQL
-- Alembic migrations
-- Clean architecture with repository pattern
-- Custom exception handling
-- Type hints and documentation
-
-## Project Structure
-
+## Project Structure 📁
 ```
-app/
-├── core/
-│   ├── config.py      # Application configuration
-│   └── database.py    # Database setup and session management
-├── heroes/
-│   ├── exceptions.py  # Custom exceptions
-│   ├── models.py      # SQLAlchemy models
-│   ├── repository.py  # Database operations
-│   ├── routes.py      # API endpoints
-│   ├── schemas.py     # Pydantic models
-│   └── service.py     # Business logic
-└── main.py           # FastAPI application setup
+api/
+├── core/              # Core functionality
+│   ├── config.py      # Environment and app configuration
+│   ├── database.py    # Database connection and sessions
+│   ├── exceptions.py  # Global exception handlers
+│   ├── logging.py     # Logging configuration
+│   └── security.py    # Authentication and security
+├── src/
+│   ├── heroes/        # Heroes module
+│   │   ├── models.py      # Database models
+│   │   ├── repository.py  # Data access layer
+│   │   ├── routes.py      # API endpoints
+│   │   └── schemas.py     # Pydantic models
+│   └── users/         # Users module
+│       ├── models.py      # User models
+│       ├── repository.py  # User data access
+│       ├── routes.py      # User endpoints
+│       └── schemas.py     # User schemas
+├── utils/            # Utility functions
+└── main.py          # Application entry point
 ```
 
-## Requirements
-
+## Requirements 📋
 - Python 3.8+
 - PostgreSQL
-- Dependencies listed in requirements.txt
 
-## Setup
+## Setup 🛠️
+1. Install uv (follow instructions [here](https://docs.astral.sh/uv/#getting-started))
 
-1. Create a virtual environment:
+2. Clone the repository:
 ```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+git clone https://github.com/yourusername/minimalistic-fastapi-template.git
+cd minimalistic-fastapi-template
 ```
 
-2. Install dependencies:
+3. Install dependencies with uv:
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
-3. Create PostgreSQL database:
-```sql
-CREATE DATABASE hero_db;
-```
-
-4. Set up environment variables (or create .env file):
-```
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/hero_db
-```
-
-5. Run database migrations:
+4. Set up environment variables:
 ```bash
-alembic upgrade head
+cp .env.example .env
+# Edit .env with your database credentials
 ```
 
-6. Start the application:
+5. Start the application:
 ```bash
-uvicorn app.main:app --reload
+uv run uvicorn app.main:app
 ```
 
-## API Endpoints
+## Creating a Migration 🔄
+1. Make changes to your models
+2. Generate migration:
+```bash
+alembic revision --autogenerate -m "your migration message"
+```
 
+Note: Migrations will be automatically applied when you start the application - no need to run `alembic upgrade head` manually!
+
+## API Endpoints 📊
+### Heroes
 - `GET /heroes` - List all heroes
 - `GET /heroes/{id}` - Get a specific hero
 - `POST /heroes` - Create a new hero
 - `PATCH /heroes/{id}` - Update a hero
 - `DELETE /heroes/{id}` - Delete a hero
 
-## Example Usage
+### Authentication
+- `POST /auth/register` - Register a new user
+- `POST /auth/login` - Login and get access token
+- `GET /auth/me` - Get current user profile
 
+## Example Usage 📝
 Create a new hero:
 ```bash
 curl -X POST "http://localhost:8000/heroes/" -H "Content-Type: application/json" -d '{
@@ -85,16 +97,4 @@ curl -X POST "http://localhost:8000/heroes/" -H "Content-Type: application/json"
     "alias": "Spider-Man",
     "powers": "Wall-crawling, super strength, spider-sense"
 }'
-```
-
-## Development
-
-To create a new database migration:
-```bash
-alembic revision --autogenerate -m "description"
-```
-
-To apply migrations:
-```bash
-alembic upgrade head
 ```

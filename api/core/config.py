@@ -6,7 +6,7 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "Hero API"
     DATABASE_URL: str
-    DEBUG: bool = True
+    DEBUG: bool = False
 
     # JWT Settings
     JWT_SECRET: str  # Change in production
